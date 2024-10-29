@@ -5,7 +5,6 @@ const auth = require("../middleware/auth"); // Middleware to check JWT
 const Journal = require("../models/Journal"); // Your Journal model
 const User = require("../models/User");
 
-
 // Create journal entry
 router.post("/create", auth, async (req, res) => {
   const { title, content } = req.body;
@@ -19,7 +18,7 @@ router.post("/create", auth, async (req, res) => {
     });
     const journal = await newJournal.save();
     res.json(journal);
-  } catch (error) {
+  } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
   }
