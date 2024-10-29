@@ -1,4 +1,4 @@
-// an endpoint for users to register
+// an endpoint for users to register or login
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -54,16 +54,13 @@ router.post("/register", async (req, res) => {
 
 // user login
 router.post("/login", async (req, res) => {
-  console.log("login hit");
   const { email, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
-    // does the user exist?
     if (!user) {
       return res.status(400).json({ msg: "Invalid Credentials: Username" });
     }
-    // is their password a match too?
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
@@ -71,17 +68,17 @@ router.post("/login", async (req, res) => {
         .json({ msg: "Invalid Credentials: Password Match" });
     }
 
-    // generate JWT token
     const payload = {
       user: {
         id: user.id,
+        username: user.username, // Include username in the token payload
       },
     };
 
     jwt.sign(
-      payload, // The payload should be the first argument
-      process.env.JWT_SECRET || "default_secret", // The secret key should be the second argument
-      { expiresIn: 3600 }, // Options like expiration time are the third argument
+      payload,
+      process.env.JWT_SECRET || "default_secret",
+      { expiresIn: 3600 },
       (err, token) => {
         if (err) throw err;
         res.json({ token });
