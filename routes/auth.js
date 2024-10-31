@@ -34,6 +34,7 @@ router.post("/register", async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        username: user.username, // Include username in the token payload
       },
     };
 
@@ -43,7 +44,7 @@ router.post("/register", async (req, res) => {
       { expiresIn: 3600 }, // 1 hour
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, username: user.username }); // Include username in response
       }
     );
   } catch (err) {
@@ -81,7 +82,7 @@ router.post("/login", async (req, res) => {
       { expiresIn: 3600 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, username: user.username }); // Include username in response
       }
     );
   } catch (err) {
