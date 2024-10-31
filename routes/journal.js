@@ -27,13 +27,14 @@ router.post("/create", auth, async (req, res) => {
 // Get all journal entries for a user
 router.get("/allentries", auth, async (req, res) => {
   try {
-    const journals = await Journal.find({ user: req.user.id });
+    const journals = await Journal.find({ user: req.user.id }); // Make sure this uses req.user.id
     res.json(journals);
   } catch (err) {
-    console.error(err.message);
+    console.error("Error fetching journals:", err);
     res.status(500).send("Server error");
   }
 });
+
 
 //route to edit a journal entry
 router.put("/edit/:id", auth, async (req, res) => {
