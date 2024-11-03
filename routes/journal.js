@@ -35,7 +35,6 @@ router.get("/allentries", auth, async (req, res) => {
   }
 });
 
-
 //route to edit a journal entry
 router.put("/edit/:id", auth, async (req, res) => {
   const { title, content } = req.body;
