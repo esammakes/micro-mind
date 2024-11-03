@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken");
 
+// Middleware to authenticate user
 module.exports = function (req, res, next) {
-  // Get token from header
-  //   const token = req.header("x-auth-token");
-  const token = req.header("Authorization")?.split(" ")[1]; // Extract token from 'Bearer <token>'
+  // Get token from the header
+  // const token = req.header("Authorization")?.split(" ")[1]; // Split "Bearer token"
+  const token = req.header("Authorization").replace("Bearer ", "");
 
-  // Check if not token
+  // Check if no token
   if (!token) {
     return res.status(401).json({ msg: "No token, authorization denied" });
   }
@@ -16,8 +17,8 @@ module.exports = function (req, res, next) {
       token,
       process.env.JWT_SECRET || "default_secret"
     );
-    req.user = decoded.user; // Attach user information to the request
-    next(); // Proceed to the next middleware
+    req.user = decoded.user; // Attach the user from the token payload to the request
+    next(); // Proceed to the next middleware or route handler
   } catch (err) {
     res.status(401).json({ msg: "Token is not valid" });
   }
