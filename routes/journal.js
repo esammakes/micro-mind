@@ -1,9 +1,9 @@
+//newer code
 // endpoint for users to manage journal entries
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth"); // Middleware to check JWT
 const Journal = require("../models/Journal"); // Your Journal model
-const User = require("../models/User");
 
 // Create journal entry
 router.post("/create", auth, async (req, res) => {
@@ -31,6 +31,38 @@ router.get("/allentries", auth, async (req, res) => {
     res.json(journals);
   } catch (err) {
     console.error("Error fetching journals:", err);
+    res.status(500).send("Server error");
+  }
+});
+
+// Generate a report of filtered journal entries - 
+router.get("/report", auth, async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  try {
+    let filter = { user: req.user.id }; // Filter entries for current user
+
+    // Add date filtering if specified
+    if (startDate && endDate) {
+      filter.createdAt = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    const journals = await Journal.find(filter);
+    const stats = {
+      totalEntries: journals.length,
+      averageContentLength:
+        journals.length > 0
+          ? journals.reduce((acc, entry) => acc + entry.content.length, 0) /
+            journals.length
+          : 0,
+    };
+
+    res.json({ journals, stats });
+  } catch (err) {
+    console.error("Error generating report:", err);
     res.status(500).send("Server error");
   }
 });

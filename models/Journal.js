@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const JournalSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "User", //FK relation with the User model
   },
   username: {
     type: String,
