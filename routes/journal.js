@@ -1,8 +1,7 @@
-//newer code
 // endpoint for users to manage journal entries
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/auth"); // Middleware to check JWT
+const auth = require("../middleware/auth"); //middleware to check JWT
 const Journal = require("../models/Journal"); // Your Journal model
 
 // Create journal entry
@@ -35,7 +34,7 @@ router.get("/allentries", auth, async (req, res) => {
   }
 });
 
-// Generate a report of filtered journal entries - 
+// Generate a report of filtered journal entries -
 router.get("/report", auth, async (req, res) => {
   const { startDate, endDate } = req.query;
 

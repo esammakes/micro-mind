@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const cors = require("cors"); // Import cors
 
 const app = express();
-const PORT = process.env.PORT || 1818;
+const PORT = 1818; //process.env.PORT || 
 
-// Use CORS middleware
+//use CORS middleware
 app.use(cors());
 
-// Use JSON middleware
+//use JSON middleware
 app.use(express.json());
 
-// Your routes here
+//your routes here
 const authRoutes = require("./routes/auth");
 const journalRoutes = require("./routes/journal");
 

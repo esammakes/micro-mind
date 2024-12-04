@@ -4,7 +4,7 @@ const JournalEntryForm = ({ onSubmit, currentEntry }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  useEffect(() => { 
+  useEffect(() => {
     if (currentEntry) {
       setTitle(currentEntry.title);
       setContent(currentEntry.content);

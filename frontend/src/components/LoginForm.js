@@ -17,6 +17,7 @@ const LoginForm = ({ onLogin }) => {
         },
         body: JSON.stringify({ email, password }),
       });
+      console.log("Payload being sent:", { email, password });
 
       const data = await response.json();
       if (response.ok) {
@@ -27,6 +28,7 @@ const LoginForm = ({ onLogin }) => {
         console.error("Login failed. Please try again or register.");
       }
     } catch (err) {
+      console.log("Payload being sent:", { email, password });
       console.error("Login error", err);
     }
   };
